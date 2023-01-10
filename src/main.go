@@ -9,19 +9,37 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-type Button struct {
-}
-
 func main() {
 	a := app.New()
+	icon, _ := fyne.LoadResourceFromPath("D:/PROGRAMMING/Production/Projects/Go/gauth/src/assets/images/appicon.png")
+	a.SetIcon(icon)
 	w := a.NewWindow("Gauth")
-	button := widget.NewButton("Update", func() {
-		log.Println("Updated")
-	})
+	usernameInput := widget.NewMultiLineEntry()
+	passwordInput := widget.NewMultiLineEntry()
+	usernameLabel := widget.NewLabel("Username")
+	passwordLabel := widget.NewLabel("Password")
+	form := &widget.Form{
+		Items: []*widget.FormItem{
+			{
+				Text:   usernameLabel.Text,
+				Widget: usernameInput,
+			},
+			{
+				Text:   passwordLabel.Text,
+				Widget: passwordInput,
+			},
+		},
+		OnSubmit: func() {
+			log.Println("UserName Submitted" + usernameInput.Text)
+			log.Println("PassWord Submitted" + passwordInput.Text)
+			w.Close()
 
-	button.Resize(fyne.NewSize(100, 20))
+		},
+	}
+	usernameInput.Resize(fyne.NewSize(400, 30))
+	passwordInput.Resize(fyne.NewSize(400, 30))
 	w.SetContent(widget.NewLabel("Gauth"))
-	w.SetContent(container.NewCenter(button))
+	w.SetContent(container.NewCenter(form))
 	w.Resize(fyne.NewSize(600, 600))
 
 	w.ShowAndRun()
